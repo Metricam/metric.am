@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 · Metric AI Lab</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+        html, body { height:100%; }
+        body {
+            font-family:'Inter',system-ui,sans-serif;
+            background:#f8f5f0;
+            color:#111827;
+            overflow-x:hidden;
+            display:flex;
+            flex-direction:column;
+        }
+        .hf { font-family:'Space Grotesk',sans-serif; }
+
+        /* Grid background */
+        .grid-bg {
+            background-color:#f8f5f0;
+            background-image:linear-gradient(to right,#e0e5ed 1px,transparent 1px),linear-gradient(to bottom,#e0e5ed 1px,transparent 1px);
+            background-size:40px 40px;
+        }
+
+        /* Nav */
+        .nav { background:rgba(248,245,240,.96); backdrop-filter:blur(12px); border-bottom:1px solid #e5e7eb; padding:16px 24px; display:flex; align-items:center; justify-content:space-between; }
+        .nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; }
+        .logo-icon { width:36px; height:36px; background:#003049; border-radius:12px; display:flex; align-items:center; justify-content:center; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:16px; color:#fff; }
+        .logo-text { font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:600; letter-spacing:-.02em; }
+        .nav-cta { padding:10px 22px; background:#003049; color:#fff; border-radius:999px; font-size:14px; font-weight:600; text-decoration:none; transition:background .2s; }
+        .nav-cta:hover { background:#e63946; }
+
+        /* Main */
+        .main { flex:1; display:flex; align-items:center; justify-content:center; padding:60px 24px; }
+        .content { max-width:700px; width:100%; }
+
+        /* Giant 404 */
+        .four-oh-four {
+            font-family:'Space Grotesk',sans-serif;
+            font-size:clamp(100px,20vw,200px);
+            font-weight:700;
+            letter-spacing:-.05em;
+            line-height:1;
+            color:#003049;
+            position:relative;
+            user-select:none;
+            margin-bottom:8px;
+        }
+        .four-oh-four .zero {
+            display:inline-block;
+            transition:transform .15s cubic-bezier(.4,0,.2,1), color .15s;
+            cursor:default;
+        }
+        .four-oh-four .zero:hover {
+            transform:rotate(-15deg) scale(1.15);
+            color:#e63946;
+        }
+
+        /* Status badge */
+        .status-badge {
+            display:inline-flex; align-items:center; gap:8px;
+            background:#fff; padding:8px 20px; border-radius:999px;
+            border:1px solid #e5e7eb; margin-bottom:28px;
+            font-size:12px; font-weight:500; letter-spacing:.1em; text-transform:uppercase;
+        }
+        .status-dot { width:8px; height:8px; background:#e63946; border-radius:50%; animation:blink 1.2s infinite; }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+
+        /* Headline */
+        .headline {
+            font-family:'Space Grotesk',sans-serif;
+            font-size:clamp(28px,4vw,44px);
+            font-weight:600;
+            letter-spacing:-.03em;
+            line-height:1.1;
+            margin-bottom:18px;
+        }
+        .subline { font-size:17px; color:#6b7280; line-height:1.65; margin-bottom:40px; max-width:520px; }
+
+        /* Interactive model output box */
+        .model-box {
+            background:#003049;
+            border-radius:20px;
+            padding:24px 28px;
+            margin-bottom:36px;
+            font-family:'Space Grotesk',sans-serif;
+            position:relative;
+            overflow:hidden;
+        }
+        .model-box-label {
+            font-size:11px; text-transform:uppercase; letter-spacing:.1em;
+            color:rgba(255,255,255,.4); margin-bottom:12px;
+            display:flex; align-items:center; gap:8px;
+        }
+        .model-box-label::before { content:''; width:8px; height:8px; background:#10b981; border-radius:50%; animation:blink2 2s infinite; }
+        @keyframes blink2 { 0%,100%{opacity:1} 50%{opacity:.3} }
+        .model-output {
+            font-size:clamp(14px,2vw,17px);
+            color:#fff;
+            line-height:1.6;
+            min-height:28px;
+        }
+        .cursor {
+            display:inline-block; width:2px; height:1.1em;
+            background:#e63946; margin-left:2px; vertical-align:middle;
+            animation:blink3 .8s infinite;
+        }
+        @keyframes blink3 { 0%,100%{opacity:1} 50%{opacity:0} }
+
+        /* Buttons */
+        .btn-row { display:flex; flex-wrap:wrap; gap:14px; }
+        .btn-primary {
+            display:inline-flex; align-items:center; gap:10px;
+            padding:16px 30px; background:#e63946; color:#fff;
+            border-radius:999px; font-weight:600; font-size:15px;
+            text-decoration:none; transition:background .2s;
+        }
+        .btn-primary:hover { background:#d32f2f; }
+        .btn-outline {
+            display:inline-flex; align-items:center; gap:10px;
+            padding:16px 30px; border:2px solid #003049; color:#003049;
+            border-radius:999px; font-weight:600; font-size:15px;
+            text-decoration:none; transition:all .2s; background:transparent; cursor:pointer;
+            font-family:'Inter',sans-serif;
+        }
+        .btn-outline:hover { background:#003049; color:#fff; }
+
+        /* Easter egg: spin counter */
+        .spin-note { font-size:13px; color:#9ca3af; margin-top:20px; }
+        .spin-count { color:#e63946; font-weight:600; }
+
+        /* Footer strip */
+        .footer-strip { border-top:1px solid #e5e7eb; padding:20px 24px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; font-size:13px; color:#9ca3af; }
+        .footer-strip a { color:#6b7280; text-decoration:none; }
+        .footer-strip a:hover { color:#003049; }
+
+        @media(max-width:600px) {
+            .btn-row { flex-direction:column; }
+            .btn-primary, .btn-outline { width:100%; justify-content:center; }
+            .footer-strip { flex-direction:column; text-align:center; }
+        }
+    </style>
+</head>
+<body class="grid-bg">
+
+<!-- Nav -->
+<nav class="nav">
+    <a href="index.html" class="nav-logo">
+        <div class="logo-icon">M</div>
+        <span class="logo-text">Metric AI Lab</span>
+    </a>
+    <a href="index.html#contact" class="nav-cta">Get In Touch</a>
+</nav>
+
+<!-- Main -->
+<div class="main">
+    <div class="content">
+
+        <div class="status-badge">
+            <div class="status-dot"></div>
+            <span>Model output: page_not_found</span>
+        </div>
+
+        <div class="four-oh-four">4<span class="zero" id="zeroSpan" title="Click me">0</span>4</div>
+
+        <h1 class="headline">Our model predicted this page.<br>It was wrong.</h1>
+        <p class="subline">We train AI that handles edge cases — apparently our web server didn't get the memo. The page you're looking for doesn't exist, was moved, or the URL had a hallucination.</p>
+
+        <!-- Live "model diagnosis" -->
+        <div class="model-box">
+            <div class="model-box-label">metric-nav-v1 · diagnosis</div>
+            <div class="model-output" id="modelOutput"><span class="cursor"></span></div>
+        </div>
+
+        <div class="btn-row">
+            <a href="index.html" class="btn-primary"><i class="fa-solid fa-house"></i> Back to home</a>
+            <button class="btn-outline" onclick="newDiagnosis()"><i class="fa-solid fa-rotate"></i> Re-run diagnosis</button>
+        </div>
+
+        <p class="spin-note" id="spinNote" style="display:none">
+            You've spun the zero <span class="spin-count" id="spinCount">0</span> times. That's <span id="spinLabel">not enough</span>.
+        </p>
+
+    </div>
+</div>
+
+<!-- Footer strip -->
+<div class="footer-strip">
+    <span>© 2026 Metric AI Lab · Yerevan, Armenia</span>
+    <div style="display:flex;gap:20px">
+        <a href="research.html">Research</a>
+        <a href="applied-ai.html">Applied AI</a>
+        <a href="portfolio.html">Portfolio</a>
+        <a href="mailto:info@metric.am">info@metric.am</a>
+    </div>
+</div>
+
+<script>
+    // ── Typewriter diagnoses ──
+    const diagnoses = [
+        "Analyzing request… URL embedding distance from any valid route: 0.97. Confidence: this page does not exist.",
+        "Running RAG over sitemap… no relevant chunks found. Suggest navigating to index.html with p=0.94.",
+        "ASR transcription of your URL: [unintelligible]. Please rephrase your request and try again.",
+        "JEPA long-horizon planner predicts: this path leads nowhere. Recommend returning to home.",
+        "VLM activated. Scanning page for content… content tensor is empty. Possible null hallucination detected.",
+        "Fine-tuning complete. Model still cannot find this page. Loss: ∞. Perplexity: also ∞.",
+        "Semantic search across all routes returned 0 results. Either the page doesn't exist or the embeddings need retraining.",
+        "Physical AI sensor array deployed. No page detected within 40px grid radius. Anomaly confirmed.",
+        "Cross-attention weights peaked at 'index.html'. The model suggests you go there. Strongly.",
+        "ArmBench evaluation: this URL scores 0/100 across all metrics. New benchmark low.",
+    ];
+
+    let currentIdx = -1;
+    let typing = false;
+
+    function pickDiagnosis() {
+        let idx;
+        do { idx = Math.floor(Math.random() * diagnoses.length); } while (idx === currentIdx);
+        currentIdx = idx;
+        return diagnoses[idx];
+    }
+
+    function typeText(text, el, callback) {
+        if (typing) return;
+        typing = true;
+        el.innerHTML = '<span class="cursor"></span>';
+        let i = 0;
+        const speed = 22;
+        function tick() {
+            if (i < text.length) {
+                // Insert before the cursor span
+                const cursor = el.querySelector('.cursor');
+                const textNode = document.createTextNode(text[i]);
+                el.insertBefore(textNode, cursor);
+                i++;
+                setTimeout(tick, speed + Math.random() * 12);
+            } else {
+                typing = false;
+                if (callback) callback();
+            }
+        }
+        tick();
+    }
+
+    function newDiagnosis() {
+        const el = document.getElementById('modelOutput');
+        const text = pickDiagnosis();
+        typeText(text, el);
+    }
+
+    // Start on load
+    window.addEventListener('load', () => {
+        setTimeout(newDiagnosis, 400);
+    });
+
+    // ── Spinning zero easter egg ──
+    let spinCount = 0;
+    const spinLabels = [
+        'not enough',
+        'getting there',
+        'okay that\'s a lot',
+        'please stop',
+        'are you okay?',
+        'we\'re calling HR',
+        'seriously though, go home',
+        'the model is filing a complaint',
+        'we respect your dedication',
+        'fine. you win. the page still doesn\'t exist.',
+    ];
+
+    const zeroSpan = document.getElementById('zeroSpan');
+    const spinNote = document.getElementById('spinNote');
+    const spinCountEl = document.getElementById('spinCount');
+    const spinLabelEl = document.getElementById('spinLabel');
+
+    let spinning = false;
+    let currentAngle = 0;
+
+    zeroSpan.addEventListener('click', () => {
+        if (spinning) return;
+        spinning = true;
+        spinCount++;
+        currentAngle += 360;
+
+        zeroSpan.style.transition = 'transform .5s cubic-bezier(.4,0,.2,1), color .15s';
+        zeroSpan.style.transform = `rotate(${currentAngle}deg)`;
+        zeroSpan.style.color = '#e63946';
+
+        setTimeout(() => {
+            zeroSpan.style.color = '';
+            spinning = false;
+        }, 520);
+
+        spinNote.style.display = 'block';
+        spinCountEl.textContent = spinCount;
+        const labelIdx = Math.min(spinCount - 1, spinLabels.length - 1);
+        spinLabelEl.textContent = spinLabels[labelIdx];
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research · Metric AI Lab</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+        html { scroll-behavior:smooth; }
+        body { font-family:'Inter',system-ui,sans-serif; background:#f8f5f0; color:#111827; overflow-x:hidden; }
+        .hf { font-family:'Space Grotesk',sans-serif; }
+
+        .container { max-width:1280px; margin:0 auto; padding:0 24px; }
+        .section { padding:80px 0; }
+        .border-b { border-bottom:1px solid #e5e7eb; }
+        .bg-white { background:#fff; }
+
+        .grid-bg {
+            background-color:#f8f5f0;
+            background-image:linear-gradient(to right,#e0e5ed 1px,transparent 1px),linear-gradient(to bottom,#e0e5ed 1px,transparent 1px);
+            background-size:40px 40px;
+        }
+
+        /* Nav */
+        .nav { position:fixed; top:0; left:0; right:0; z-index:100; background:rgba(248,245,240,.96); backdrop-filter:blur(12px); border-bottom:1px solid #e5e7eb; }
+        .nav-inner { max-width:1280px; margin:0 auto; padding:16px 24px; display:flex; align-items:center; justify-content:space-between; }
+        .nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; }
+        .logo-icon { width:36px; height:36px; background:#003049; border-radius:12px; display:flex; align-items:center; justify-content:center; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:16px; color:#fff; flex-shrink:0; }
+        .logo-text { font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:600; letter-spacing:-.02em; }
+        .nav-links { display:flex; align-items:center; gap:32px; }
+        .nav-links a { font-size:14px; font-weight:500; color:#374151; text-decoration:none; transition:color .2s; }
+        .nav-links a:hover { color:#e63946; }
+        .nav-links a.active { color:#e63946; }
+        .nav-cta { padding:10px 22px; background:#003049; color:#fff; border-radius:999px; font-size:14px; font-weight:600; text-decoration:none; transition:background .2s; white-space:nowrap; }
+        .nav-cta:hover { background:#e63946; }
+        .hamburger { display:none; font-size:24px; background:none; border:none; cursor:pointer; padding:8px; line-height:1; }
+
+        .mobile-menu { display:none; position:fixed; inset:0; background:#f8f5f0; z-index:90; padding:88px 24px 40px; flex-direction:column; }
+        .mobile-menu.open { display:flex; }
+        .mobile-menu a { display:block; padding:16px 0; font-size:20px; font-weight:500; color:#111827; text-decoration:none; border-bottom:1px solid #e5e7eb; }
+        .mobile-menu a:hover { color:#e63946; }
+        .mobile-cta { margin-top:24px !important; padding:18px !important; background:#003049; color:#fff !important; border-radius:999px; text-align:center; font-weight:600 !important; font-size:18px !important; border:none; }
+        .mobile-cta:hover { background:#e63946 !important; color:#fff !important; }
+
+        /* Hero */
+        .page-hero { padding:112px 0 64px; }
+        .hero-badge { display:inline-flex; align-items:center; gap:8px; background:#fff; padding:8px 20px; border-radius:999px; border:1px solid #e5e7eb; margin-bottom:28px; font-size:12px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; }
+        .hero-badge i { color:#e63946; font-size:12px; }
+
+        /* Labels */
+        .label { font-size:12px; text-transform:uppercase; letter-spacing:.1em; color:#9ca3af; margin-bottom:10px; }
+        .label-red { color:#e63946; }
+        .label-green { color:#059669; }
+
+        /* Section heading */
+        .sec-h { font-family:'Space Grotesk',sans-serif; font-size:clamp(34px,4.5vw,54px); font-weight:600; letter-spacing:-.03em; line-height:1.05; }
+
+        /* Cards */
+        .card { border-radius:24px; padding:36px; transition:transform .3s cubic-bezier(.4,0,.2,1), box-shadow .3s; }
+        .card:hover { transform:translateY(-3px); box-shadow:0 20px 40px -12px rgba(0,0,0,.12); }
+        .card-white { background:#fff; border:1px solid #e5e7eb; }
+        .card-cream { background:#f8f5f0; border:1px solid #e5e7eb; }
+        .card-navy { background:#003049; color:#fff; }
+
+        /* Two col */
+        .two-col { display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+
+        /* Direction block */
+        .dir-wrap { display:flex; gap:32px; align-items:flex-start; }
+        .dir-num { writing-mode:vertical-rl; text-orientation:mixed; transform:rotate(180deg); font-size:11px; letter-spacing:.15em; text-transform:uppercase; color:#9ca3af; flex-shrink:0; padding-top:4px; }
+        .dir-line { width:2px; background:#003049; min-height:60px; flex-shrink:0; margin-top:4px; }
+        .dir-line-muted { background:#d1d5db; }
+        .dir-meta { display:flex; flex-shrink:0; gap:12px; }
+
+        /* Pill tags */
+        .pill { display:inline-block; padding:6px 16px; border-radius:999px; font-size:13px; font-weight:500; }
+        .pill-navy { background:#003049; color:#fff; }
+        .pill-outline { background:#f8f5f0; border:1px solid #d1d5db; color:#6b7280; }
+        .pill-muted { background:#f3f4f6; color:#6b7280; }
+
+        /* Bullet list */
+        .blist { list-style:none; display:flex; flex-direction:column; gap:10px; }
+        .blist li { display:flex; align-items:flex-start; gap:10px; font-size:14px; color:#6b7280; line-height:1.5; }
+        .blist li::before { content:''; width:8px; height:8px; background:#e63946; border-radius:50%; flex-shrink:0; margin-top:5px; }
+
+        /* Callout banner */
+        .callout { border-radius:24px; padding:40px; display:flex; align-items:center; justify-content:space-between; gap:32px; flex-wrap:wrap; }
+        .callout-navy { background:#003049; color:#fff; }
+        .callout-cream { background:#f8f5f0; border:2px solid #d1d5db; }
+
+        /* Inline link */
+        .ilink { font-weight:600; color:#003049; text-decoration:none; border-bottom:2px solid #003049; padding-bottom:2px; transition:color .2s,border-color .2s; }
+        .ilink:hover { color:#e63946; border-color:#e63946; }
+
+        /* Buttons */
+        .btn-primary { display:inline-flex; align-items:center; gap:10px; padding:16px 32px; background:#003049; color:#fff; border-radius:999px; font-weight:600; font-size:15px; text-decoration:none; transition:background .2s; }
+        .btn-primary:hover { background:#e63946; }
+        .btn-outline { display:inline-flex; align-items:center; justify-content:center; padding:16px 32px; border:2px solid #003049; color:#003049; border-radius:999px; font-weight:600; font-size:15px; text-decoration:none; transition:all .2s; }
+        .btn-outline:hover { background:#003049; color:#fff; }
+
+        /* Footer */
+        .footer-inner { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:40px; }
+        .footer-links { display:grid; grid-template-columns:repeat(3,1fr); gap:40px; font-size:14px; }
+        .fcol-title { font-weight:600; margin-bottom:12px; }
+        .fcol a { display:block; color:#6b7280; text-decoration:none; margin-bottom:8px; transition:color .2s; }
+        .fcol a:hover { color:#003049; }
+
+        /* Animations */
+        @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+        .fu  { animation:fadeUp .7s .00s ease both; }
+        .fu2 { animation:fadeUp .7s .15s ease both; }
+        .fu3 { animation:fadeUp .7s .30s ease both; }
+
+        /* Responsive */
+        @media(max-width:960px) {
+            .nav-links,.nav-cta { display:none; }
+            .hamburger { display:block; }
+            .two-col { grid-template-columns:1fr; }
+            .dir-num,.dir-line { display:none; }
+            .callout { flex-direction:column; align-items:flex-start; }
+            .footer-links { grid-template-columns:repeat(3,1fr); }
+        }
+        @media(max-width:600px) {
+            .section { padding:56px 0; }
+            .page-hero { padding:96px 0 48px; }
+            .card { padding:24px 20px; }
+            .footer-inner { flex-direction:column; }
+            .footer-links { grid-template-columns:1fr 1fr; gap:24px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="nav">
+    <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+            <div class="logo-icon">M</div>
+            <span class="logo-text">Metric AI Lab</span>
+        </a>
+        <div class="nav-links">
+            <a href="research.html" class="active">Research</a>
+            <a href="applied-ai.html">Applied AI</a>
+            <a href="portfolio.html">Portfolio</a>
+        </div>
+        <a href="index.html#contact" class="nav-cta">Get In Touch</a>
+        <button class="hamburger" id="hamburger">☰</button>
+    </div>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+    <a href="research.html" onclick="closeMobile()">Research</a>
+    <a href="applied-ai.html" onclick="closeMobile()">Applied AI</a>
+    <a href="portfolio.html" onclick="closeMobile()">Portfolio</a>
+    <a href="index.html#contact" class="mobile-cta" onclick="closeMobile()">Get In Touch</a>
+</div>
+
+<!-- HERO -->
+<header class="page-hero grid-bg border-b">
+    <div class="container">
+        <div class="hero-badge fu"><i class="fa-solid fa-flask-vial"></i> Research</div>
+        <h1 class="hf fu2" style="font-size:clamp(40px,6vw,72px);font-weight:600;letter-spacing:-.03em;line-height:1.02;margin-bottom:24px;max-width:800px">We build what doesn't exist yet.</h1>
+        <p class="fu3" style="font-size:clamp(16px,1.8vw,19px);color:#6b7280;max-width:580px;line-height:1.65">Three active research directions: Physical AI (primary focus), Armenian &amp; low-resource language AI, and visual document understanding. We publish openly and put models on Hugging Face.</p>
+    </div>
+</header>
+
+<!-- DIRECTION 1: PHYSICAL AI -->
+<section class="section border-b">
+    <div class="container">
+        <div class="dir-wrap" style="margin-bottom:52px">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:0;flex-shrink:0">
+                <div class="dir-num">Direction 01</div>
+                <div class="dir-line" style="height:60px;margin-top:8px"></div>
+            </div>
+            <div>
+                <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px">
+                    <span class="pill pill-navy">Primary Focus</span>
+                    <span style="font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:#9ca3af">Physical AI</span>
+                </div>
+                <h2 class="hf sec-h" style="margin-bottom:20px">Where AI meets the real world.</h2>
+                <p style="font-size:18px;color:#6b7280;max-width:680px;line-height:1.65">We believe the most interesting unsolved problems in AI are about understanding and acting in physical environments. Our research sits at the intersection of two hard problems.</p>
+            </div>
+        </div>
+
+        <!-- Two threads -->
+        <div class="two-col" style="margin-bottom:36px">
+            <div class="card card-white" style="border:2px solid #003049">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+                    <i class="fa-solid fa-cube" style="font-size:28px;color:#003049"></i>
+                    <span style="font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af">Thread A</span>
+                </div>
+                <h3 class="hf" style="font-size:26px;font-weight:600;margin-bottom:14px">Real-World Intelligence</h3>
+                <p style="color:#6b7280;font-size:15px;line-height:1.65;margin-bottom:20px">Training VLMs to reason about spatial structure, scene geometry, and physical constraints — moving beyond "what is this" to "where is this, how does it move, what will happen next."</p>
+                <ul class="blist">
+                    <li>Spatial intelligence and 3D scene understanding in VLMs</li>
+                    <li>Embodied reasoning — what can and can't happen in a physical scene</li>
+                    <li>Depth, affordance, and object permanence in vision-language models</li>
+                </ul>
+            </div>
+            <div class="card card-white" style="border:2px solid #003049">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+                    <i class="fa-solid fa-diagram-project" style="font-size:28px;color:#003049"></i>
+                    <span style="font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af">Thread B</span>
+                </div>
+                <h3 class="hf" style="font-size:26px;font-weight:600;margin-bottom:14px">Robotic Control &amp; Planning</h3>
+                <p style="color:#6b7280;font-size:15px;line-height:1.65;margin-bottom:20px">Joint Embedding Predictive Architectures (JEPA) for long-horizon robotic planning. Teaching models to predict useful representations of future states, not just next tokens.</p>
+                <ul class="blist">
+                    <li>JEPA-based planners for multi-step manipulation tasks</li>
+                    <li>Vision-Language-Action models for dexterous control</li>
+                    <li>Long-horizon prediction without step-by-step supervision</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- NeurIPS callout -->
+        <div class="callout callout-navy">
+            <div>
+                <div class="label label-red" style="margin-bottom:10px">Latest paper</div>
+                <h3 class="hf" style="font-size:22px;font-weight:600;color:#fff;margin-bottom:8px">JEPA for Long-Horizon Robotic Planning</h3>
+                <p style="color:#d1d5db;max-width:560px;font-size:15px;line-height:1.6">Submitted to NeurIPS 2026. JEPA-based architectures trained for extended planning over physical action sequences in robotics tasks.</p>
+            </div>
+            <div style="flex-shrink:0">
+                <span class="pill" style="background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:13px">NeurIPS 2026 · Under Review</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- DIRECTION 2: ARMENIAN AI -->
+<section class="section border-b bg-white">
+    <div class="container">
+        <div class="dir-wrap" style="margin-bottom:52px">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:0;flex-shrink:0">
+                <div class="dir-num">Direction 02</div>
+                <div class="dir-line dir-line-muted" style="height:60px;margin-top:8px"></div>
+            </div>
+            <div>
+                <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px">
+                    <span class="pill pill-outline">Open Science · Pro Bono</span>
+                    <span style="font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:#9ca3af">Armenian AI &amp; Low-Resource Languages</span>
+                </div>
+                <h2 class="hf sec-h" style="margin-bottom:20px">Armenian AI — and a blueprint for every underrepresented language.</h2>
+                <p style="font-size:18px;color:#6b7280;max-width:700px;line-height:1.65">We are Armenians. We invest our own budget and time into building AI infrastructure for Armenian — not because it's a business, but because it matters. The methods we develop translate directly to Georgian, Uzbek, and any other low-resource language.</p>
+            </div>
+        </div>
+
+        <!-- Three cards -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-bottom:36px" class="research-3col">
+            <div class="card card-cream">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+                    <span style="font-size:22px">🇦🇲</span>
+                    <span style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af">Released</span>
+                </div>
+                <h3 style="font-weight:600;font-size:19px;margin-bottom:10px">ATE-1 &amp; ATE-2</h3>
+                <p style="color:#6b7280;font-size:14px;line-height:1.6;margin-bottom:16px">Armenian Text Embeddings — SOTA embedding models for Armenian. Outperform Gemini and OpenAI embeddings on every Armenian benchmark.</p>
+                <span class="pill pill-navy" style="font-size:12px">#1 on ArmBench-TextEmbed</span>
+            </div>
+            <div class="card card-cream">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+                    <i class="fa-solid fa-trophy" style="font-size:22px;color:#e63946"></i>
+                    <span style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af">Open</span>
+                </div>
+                <h3 style="font-weight:600;font-size:19px;margin-bottom:10px">ArmBench Leaderboards</h3>
+                <p style="color:#6b7280;font-size:14px;line-height:1.6;margin-bottom:16px">ArmBench-TextEmbed and ArmBench-LLM — the first open benchmarks for evaluating text embedding and LLM performance in Armenian.</p>
+                <span class="pill pill-navy" style="font-size:12px">First Armenian benchmarks</span>
+            </div>
+            <div class="card card-cream">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px">
+                    <i class="fa-solid fa-language" style="font-size:22px;color:#003049"></i>
+                    <span style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:#9ca3af">In progress</span>
+                </div>
+                <h3 style="font-weight:600;font-size:19px;margin-bottom:10px">Armenian LLM</h3>
+                <p style="color:#6b7280;font-size:14px;line-height:1.6;margin-bottom:16px">Training an LLM with a localized tokenizer from scratch. Existing models are tokenizer-inefficient for Armenian — we're fixing that with our own data pipeline.</p>
+                <span class="pill pill-muted" style="font-size:12px">Active training</span>
+            </div>
+        </div>
+
+        <!-- EACL callout -->
+        <div class="callout callout-cream">
+            <div>
+                <div class="label label-green" style="margin-bottom:10px">Published · EACL 2026 · LoResLM Workshop</div>
+                <h3 class="hf" style="font-size:20px;font-weight:600;margin-bottom:8px">Adapting Text Embeddings to Low-Resource Languages with Noisy Translations</h3>
+                <p style="color:#6b7280;max-width:560px;font-size:15px;line-height:1.6">SOTA embedding quality in a low-resource language using only 10k noisy translations — no large parallel corpora required. Applied to Armenian; validated on Georgian and Uzbek. Method generalises to any low-resource language.</p>
+            </div>
+            <div style="flex-shrink:0">
+                <span class="pill pill-navy" style="font-size:13px">EACL 2026 · Published</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- DIRECTION 3: DOCUMENT AI (PAST) -->
+<section class="section border-b">
+    <div class="container">
+        <div class="dir-wrap" style="margin-bottom:44px">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:0;flex-shrink:0">
+                <div class="dir-num" style="color:#d1d5db">Direction 03</div>
+                <div class="dir-line" style="height:60px;margin-top:8px;background:#e5e7eb"></div>
+            </div>
+            <div>
+                <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px">
+                    <span class="pill pill-muted">Past Research</span>
+                    <span style="font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:#d1d5db">Document AI</span>
+                </div>
+                <h2 class="hf" style="font-size:clamp(30px,4vw,50px);font-weight:600;letter-spacing:-.03em;line-height:1.05;color:#9ca3af;margin-bottom:16px">We pioneered visual document retrieval. Then moved on.</h2>
+                <p style="font-size:17px;color:#9ca3af;max-width:640px;line-height:1.65">We built ColPali-style multimodal embeddings for visual document retrieval and held the #1 rank on the ViDoRe benchmark globally. The field matured and became crowded — we turned our attention to harder problems.</p>
+            </div>
+        </div>
+
+        <div style="background:#f3f4f6;border-radius:24px;padding:36px;display:flex;align-items:center;justify-content:space-between;gap:28px;flex-wrap:wrap">
+            <div>
+                <div style="font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:#9ca3af;margin-bottom:10px">ViDoRe Benchmark · Globally #1 (held)</div>
+                <h3 class="hf" style="font-size:20px;font-weight:600;color:#6b7280;margin-bottom:8px">ColQwen Multimodal Document Embedding Series</h3>
+                <p style="color:#9ca3af;font-size:14px;line-height:1.6;max-width:520px">Visual document retrieval embeddings ranked #1 on ViDoRe benchmark. Models still available and used in production. Research direction discontinued.</p>
+            </div>
+            <a href="https://huggingface.co/Metric-AI" target="_blank" style="display:inline-block;padding:12px 24px;border:2px solid #d1d5db;border-radius:999px;font-size:14px;font-weight:500;color:#6b7280;text-decoration:none;white-space:nowrap;transition:border-color .2s" onmouseover="this.style.borderColor='#9ca3af'" onmouseout="this.style.borderColor='#d1d5db'">View on Hugging Face →</a>
+        </div>
+    </div>
+</section>
+
+<!-- OPEN SCIENCE LINKS -->
+<section class="section bg-white">
+    <div class="container" style="text-align:center">
+        <h2 class="hf" style="font-size:clamp(30px,4vw,44px);font-weight:600;letter-spacing:-.03em;margin-bottom:14px">Everything is open.</h2>
+        <p style="color:#6b7280;font-size:16px;margin-bottom:40px">All our models and benchmarks are public. We believe open science makes everyone better.</p>
+        <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:16px">
+            <a href="https://huggingface.co/Metric-AI" target="_blank" class="btn-primary"><i class="fa-solid fa-cube"></i> Metric-AI on Hugging Face</a>
+            <a href="index.html#contact" class="btn-outline">Collaborate with us →</a>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:#f8f5f0;border-top:1px solid #e5e7eb;padding:64px 0">
+    <div class="container">
+        <div class="footer-inner">
+            <div>
+                <a href="index.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;margin-bottom:14px">
+                    <div class="logo-icon">M</div>
+                    <span class="logo-text">Metric AI Lab</span>
+                </a>
+                <p style="font-size:14px;color:#6b7280;line-height:1.6">Frontier Applied AI Research Lab<br>Yerevan, Armenia</p>
+            </div>
+            <div class="footer-links">
+                <div class="fcol"><div class="fcol-title">Lab</div><a href="research.html">Research</a><a href="applied-ai.html">Applied AI</a><a href="portfolio.html">Portfolio</a></div>
+                <div class="fcol"><div class="fcol-title">Contact</div><a href="mailto:info@metric.am">info@metric.am</a></div>
+                <div class="fcol"><div class="fcol-title">Open Science</div><a href="https://huggingface.co/Metric-AI" target="_blank">Hugging Face</a><a href="https://am.linkedin.com/company/metric-ai-lab" target="_blank">LinkedIn</a></div>
+            </div>
+            <div style="font-size:12px;color:#9ca3af;align-self:flex-end;white-space:nowrap">© 2026 Metric AI Lab</div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('mobile-menu').classList.toggle('open'));
+    function closeMobile(){document.getElementById('mobile-menu').classList.remove('open');}
+</script>
+
+<!-- Responsive: 3-col grid collapses on mobile -->
+<style>
+    @media(max-width:760px){ .research-3col{grid-template-columns:1fr !important;} }
+</style>
+</body>
+</html>

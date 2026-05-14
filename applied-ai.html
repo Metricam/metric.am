@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applied AI · Metric AI Lab</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+        html { scroll-behavior:smooth; }
+        body { font-family:'Inter',system-ui,sans-serif; background:#f8f5f0; color:#111827; overflow-x:hidden; }
+        .hf { font-family:'Space Grotesk',sans-serif; }
+
+        .container { max-width:1280px; margin:0 auto; padding:0 24px; }
+        .section { padding:80px 0; }
+        .border-b { border-bottom:1px solid #e5e7eb; }
+        .bg-white { background:#fff; }
+
+        .grid-bg {
+            background-color:#f8f5f0;
+            background-image:linear-gradient(to right,#e0e5ed 1px,transparent 1px),linear-gradient(to bottom,#e0e5ed 1px,transparent 1px);
+            background-size:40px 40px;
+        }
+
+        /* Nav */
+        .nav { position:fixed; top:0; left:0; right:0; z-index:100; background:rgba(248,245,240,.96); backdrop-filter:blur(12px); border-bottom:1px solid #e5e7eb; }
+        .nav-inner { max-width:1280px; margin:0 auto; padding:16px 24px; display:flex; align-items:center; justify-content:space-between; }
+        .nav-logo { display:flex; align-items:center; gap:12px; text-decoration:none; color:inherit; }
+        .logo-icon { width:36px; height:36px; background:#003049; border-radius:12px; display:flex; align-items:center; justify-content:center; font-family:'Space Grotesk',sans-serif; font-weight:700; font-size:16px; color:#fff; flex-shrink:0; }
+        .logo-text { font-family:'Space Grotesk',sans-serif; font-size:18px; font-weight:600; letter-spacing:-.02em; }
+        .nav-links { display:flex; align-items:center; gap:32px; }
+        .nav-links a { font-size:14px; font-weight:500; color:#374151; text-decoration:none; transition:color .2s; }
+        .nav-links a:hover,.nav-links a.active { color:#e63946; }
+        .nav-cta { padding:10px 22px; background:#003049; color:#fff; border-radius:999px; font-size:14px; font-weight:600; text-decoration:none; transition:background .2s; white-space:nowrap; }
+        .nav-cta:hover { background:#e63946; }
+        .hamburger { display:none; font-size:24px; background:none; border:none; cursor:pointer; padding:8px; line-height:1; }
+
+        .mobile-menu { display:none; position:fixed; inset:0; background:#f8f5f0; z-index:90; padding:88px 24px 40px; flex-direction:column; }
+        .mobile-menu.open { display:flex; }
+        .mobile-menu a { display:block; padding:16px 0; font-size:20px; font-weight:500; color:#111827; text-decoration:none; border-bottom:1px solid #e5e7eb; }
+        .mobile-menu a:hover { color:#e63946; }
+        .mobile-cta { margin-top:24px !important; padding:18px !important; background:#003049; color:#fff !important; border-radius:999px; text-align:center; font-weight:600 !important; border:none; }
+        .mobile-cta:hover { background:#e63946 !important; color:#fff !important; }
+
+        /* Hero */
+        .page-hero { padding:112px 0 64px; }
+        .hero-badge { display:inline-flex; align-items:center; gap:8px; background:#fff; padding:8px 20px; border-radius:999px; border:1px solid #e5e7eb; margin-bottom:28px; font-size:12px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; }
+        .hero-badge i { color:#e63946; font-size:12px; }
+
+        /* Pill tags */
+        .pill { display:inline-block; padding:6px 16px; border-radius:999px; font-size:13px; font-weight:500; margin:0 6px 6px 0; }
+        .pill-navy { background:#003049; color:#fff; }
+        .pill-red { background:#e63946; color:#fff; }
+        .pill-outline-navy { border:2px solid #003049; color:#003049; background:transparent; }
+        .pill-outline { border:1px solid #d1d5db; color:#6b7280; background:#f8f5f0; }
+        .pill-muted { background:#f3f4f6; color:#6b7280; }
+
+        /* Section heading */
+        .sec-h { font-family:'Space Grotesk',sans-serif; font-size:clamp(32px,4.5vw,52px); font-weight:600; letter-spacing:-.03em; line-height:1.05; }
+
+        /* Stats bar (dark) */
+        .stats-bar { background:#003049; color:#fff; padding:48px 0; }
+        .stats-inner { display:grid; grid-template-columns:repeat(4,1fr); }
+        .stat-cell { text-align:center; padding:0 24px; border-right:1px solid rgba(255,255,255,.15); }
+        .stat-cell:last-child { border-right:none; }
+        .stat-num { font-family:'Space Grotesk',sans-serif; font-size:clamp(32px,4vw,44px); font-weight:700; }
+        .stat-lbl { margin-top:6px; color:rgba(255,255,255,.6); font-size:14px; }
+
+        /* Cards */
+        .card { border-radius:24px; padding:36px; transition:transform .3s cubic-bezier(.4,0,.2,1), box-shadow .3s; }
+        .card:hover { transform:translateY(-3px); box-shadow:0 20px 40px -12px rgba(0,0,0,.12); }
+        .card-white { background:#fff; border:1px solid #e5e7eb; }
+        .card-navy { background:#003049; color:#fff; }
+        .card-red { background:#e63946; color:#fff; }
+        .card-cream { background:#f8f5f0; border:1px solid #e5e7eb; }
+
+        /* Focus grid */
+        .focus-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+
+        /* Bullet list */
+        .blist { list-style:none; display:flex; flex-direction:column; gap:10px; }
+        .blist li { display:flex; align-items:flex-start; gap:10px; font-size:14px; line-height:1.5; }
+        .blist-dark li { color:#d1d5db; }
+        .blist-dark li::before { content:''; width:8px; height:8px; background:#e63946; border-radius:50%; flex-shrink:0; margin-top:4px; }
+        .blist-red li { color:rgba(255,255,255,.8); }
+        .blist-red li::before { content:''; width:8px; height:8px; background:#fff; border-radius:50%; flex-shrink:0; margin-top:4px; }
+
+        /* Era timeline */
+        .era-wrap { position:relative; padding-left:64px; }
+        .era-line { position:absolute; left:20px; top:0; bottom:0; width:2px; background:linear-gradient(to bottom,#003049,#e63946); }
+        .era-block { position:relative; padding-bottom:48px; }
+        .era-block:last-child { padding-bottom:0; }
+        .era-dot { position:absolute; left:-52px; top:2px; width:36px; height:36px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:13px; color:#fff; flex-shrink:0; }
+        .dot-navy { background:#003049; }
+        .dot-red { background:#e63946; }
+
+        /* Capability chips */
+        .chip-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:20px; }
+        .chip { display:flex; align-items:center; gap:10px; padding:12px 16px; background:#f8f5f0; border-radius:14px; font-size:13px; color:#374151; }
+        .chip-dark { background:rgba(255,255,255,.1); color:#d1d5db; }
+        .chip-red-bg { background:rgba(255,255,255,.15); color:rgba(255,255,255,.9); }
+        .chip i { font-size:14px; color:#003049; flex-shrink:0; }
+        .chip-dark i { color:#fff; }
+        .chip-red-bg i { color:#fff; }
+
+        /* How we work */
+        .how-grid { display:flex; flex-direction:column; gap:16px; }
+        .how-item { display:flex; align-items:flex-start; gap:16px; background:#f8f5f0; border-radius:18px; padding:22px; }
+        .how-icon { width:40px; height:40px; background:#003049; color:#fff; border-radius:14px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:14px; }
+
+        /* Two col */
+        .two-col { display:grid; grid-template-columns:1fr 1fr; gap:64px; align-items:center; }
+
+        /* Inline link */
+        .ilink { font-weight:600; color:#003049; text-decoration:none; border-bottom:2px solid #003049; padding-bottom:2px; transition:color .2s,border-color .2s; }
+        .ilink:hover { color:#e63946; border-color:#e63946; }
+
+        /* Buttons */
+        .btn-primary { display:inline-flex; align-items:center; gap:10px; padding:16px 32px; background:#e63946; color:#fff; border-radius:999px; font-weight:600; font-size:16px; text-decoration:none; transition:background .2s; }
+        .btn-primary:hover { background:#d32f2f; }
+
+        /* Footer */
+        .footer-inner { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:40px; }
+        .footer-links { display:grid; grid-template-columns:repeat(3,1fr); gap:40px; font-size:14px; }
+        .fcol-title { font-weight:600; margin-bottom:12px; }
+        .fcol a { display:block; color:#6b7280; text-decoration:none; margin-bottom:8px; transition:color .2s; }
+        .fcol a:hover { color:#003049; }
+
+        /* Animations */
+        @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+        .fu  { animation:fadeUp .7s .00s ease both; }
+        .fu2 { animation:fadeUp .7s .15s ease both; }
+        .fu3 { animation:fadeUp .7s .30s ease both; }
+
+        /* Responsive */
+        @media(max-width:960px) {
+            .nav-links,.nav-cta { display:none; }
+            .hamburger { display:block; }
+            .stats-inner { grid-template-columns:1fr 1fr; row-gap:28px; }
+            .stat-cell { border-right:none; border-bottom:1px solid rgba(255,255,255,.1); padding-bottom:20px; }
+            .stat-cell:nth-child(odd) { border-right:1px solid rgba(255,255,255,.1); }
+            .stat-cell:nth-last-child(-n+2) { border-bottom:none; }
+            .focus-grid { grid-template-columns:1fr; }
+            .two-col { grid-template-columns:1fr; gap:44px; }
+            .chip-grid { grid-template-columns:1fr; }
+            .footer-links { grid-template-columns:repeat(3,1fr); }
+        }
+        @media(max-width:600px) {
+            .section { padding:56px 0; }
+            .page-hero { padding:96px 0 48px; }
+            .card { padding:24px 20px; }
+            .era-wrap { padding-left:48px; }
+            .era-dot { left:-36px; width:28px; height:28px; font-size:11px; }
+            .footer-inner { flex-direction:column; }
+            .footer-links { grid-template-columns:1fr 1fr; gap:24px; }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="nav">
+    <div class="nav-inner">
+        <a href="index.html" class="nav-logo">
+            <div class="logo-icon">M</div>
+            <span class="logo-text">Metric AI Lab</span>
+        </a>
+        <div class="nav-links">
+            <a href="research.html">Research</a>
+            <a href="applied-ai.html" class="active">Applied AI</a>
+            <a href="portfolio.html">Portfolio</a>
+        </div>
+        <a href="index.html#contact" class="nav-cta">Get In Touch</a>
+        <button class="hamburger" id="hamburger">☰</button>
+    </div>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+    <a href="research.html" onclick="closeMobile()">Research</a>
+    <a href="applied-ai.html" onclick="closeMobile()">Applied AI</a>
+    <a href="portfolio.html" onclick="closeMobile()">Portfolio</a>
+    <a href="index.html#contact" class="mobile-cta" onclick="closeMobile()">Get In Touch</a>
+</div>
+
+<!-- HERO -->
+<header class="page-hero grid-bg border-b">
+    <div class="container">
+        <div class="hero-badge fu"><i class="fa-solid fa-gears"></i> Applied AI</div>
+        <h1 class="hf fu2" style="font-size:clamp(40px,6vw,72px);font-weight:600;letter-spacing:-.03em;line-height:1.02;margin-bottom:24px;max-width:820px">Not a consultancy.<br>An execution partner.</h1>
+        <p class="fu3" style="font-size:clamp(16px,1.8vw,19px);color:#6b7280;max-width:580px;line-height:1.65;margin-bottom:32px">We've delivered 100+ AI projects across enterprise and growth-stage companies. We handle complexity — custom model training, full-stack Voice AI, Physical AI deployments — not just API integrations.</p>
+        <div class="fu3">
+            <span class="pill pill-outline-navy">Voice AI</span>
+            <span class="pill pill-red">Physical AI ← current focus</span>
+            <span class="pill pill-outline">GenAI &amp; RAG</span>
+            <span class="pill pill-outline">Custom Training</span>
+            <span class="pill pill-outline">Analytics &amp; ML</span>
+        </div>
+    </div>
+</header>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+    <div class="container">
+        <div class="stats-inner">
+            <div class="stat-cell"><div class="stat-num">100+</div><div class="stat-lbl">Projects delivered</div></div>
+            <div class="stat-cell"><div class="stat-num">8+</div><div class="stat-lbl">Years in production AI</div></div>
+            <div class="stat-cell"><div class="stat-num">Fortune<br>500</div><div class="stat-lbl">Enterprise clients</div></div>
+            <div class="stat-cell"><div class="stat-num">On-prem</div><div class="stat-lbl">Security-first deployments</div></div>
+        </div>
+    </div>
+</div>
+
+<!-- CURRENT FOCUS: VOICE AI + PHYSICAL AI -->
+<section class="section border-b bg-white">
+    <div class="container">
+        <div style="text-align:center;margin-bottom:52px">
+            <div style="font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:#e63946;margin-bottom:10px">Where we're spending most of our time</div>
+            <h2 class="hf sec-h">Current focus areas</h2>
+        </div>
+        <div class="focus-grid">
+            <!-- Voice AI -->
+            <div class="card card-navy">
+                <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px">
+                    <div style="width:52px;height:52px;background:rgba(255,255,255,.1);border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                        <i class="fa-solid fa-microphone" style="font-size:26px;color:#fff"></i>
+                    </div>
+                    <div>
+                        <h3 class="hf" style="font-size:22px;font-weight:600;color:#fff">Voice AI</h3>
+                        <div style="color:rgba(255,255,255,.5);font-size:13px">Inbound &amp; Outbound</div>
+                    </div>
+                </div>
+                <p style="color:#d1d5db;font-size:15px;line-height:1.65;margin-bottom:24px">End-to-end voice pipeline ownership: ASR, LLM, TTS, RAG, memory — all integrated and deployed. Almost always on-premise with fine-tuned models for client-specific performance at lower cost than off-the-shelf.</p>
+                <ul class="blist blist-dark">
+                    <li>Inbound customer support — multilingual, real-time</li>
+                    <li>Outbound sales and follow-up agents</li>
+                    <li>Fraud detection and compliance call monitoring</li>
+                    <li>20+ languages, on-prem deployments</li>
+                </ul>
+            </div>
+            <!-- Physical AI -->
+            <div class="card card-red">
+                <div style="display:flex;align-items:center;gap:14px;margin-bottom:24px">
+                    <div style="width:52px;height:52px;background:rgba(255,255,255,.15);border-radius:16px;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                        <i class="fa-solid fa-eye" style="font-size:26px;color:#fff"></i>
+                    </div>
+                    <div>
+                        <h3 class="hf" style="font-size:22px;font-weight:600;color:#fff">Physical AI</h3>
+                        <div style="color:rgba(255,255,255,.65);font-size:13px">Industrial Vision &amp; Real-World Intelligence</div>
+                    </div>
+                </div>
+                <p style="color:rgba(255,255,255,.85);font-size:15px;line-height:1.65;margin-bottom:24px">Computer vision and AI systems that understand and act in physical environments. From factory floors to traffic infrastructure — we build perception systems that work at production scale.</p>
+                <ul class="blist blist-red">
+                    <li>Industrial anomaly detection and defect inspection</li>
+                    <li>Factory floor monitoring and alert systems</li>
+                    <li>Traffic monitoring and violation detection</li>
+                    <li>Medical imaging and digital pathology</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ERA TIMELINE -->
+<section class="section border-b">
+    <div class="container">
+        <div style="text-align:center;margin-bottom:60px">
+            <div style="font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:#9ca3af;margin-bottom:10px">Our track record</div>
+            <h2 class="hf sec-h" style="margin-bottom:14px">Eight years of hard problems.</h2>
+            <p style="color:#6b7280;font-size:16px;max-width:480px;margin:0 auto;line-height:1.6">We've grown with every wave of AI — and stayed technical throughout.</p>
+        </div>
+        <div class="era-wrap">
+            <div class="era-line"></div>
+
+            <!-- Era 1 -->
+            <div class="era-block">
+                <div class="era-dot dot-navy">1</div>
+                <div class="card card-white">
+                    <div style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#9ca3af;margin-bottom:14px">Pre-GenAI Era · 2016–2022</div>
+                    <h3 class="hf" style="font-size:26px;font-weight:600;margin-bottom:12px">Traditional ML, Computer Vision &amp; Analytics</h3>
+                    <p style="color:#6b7280;font-size:15px;line-height:1.65;margin-bottom:0">Custom model training was our default. Everything required ground-up solutions: designing architectures, collecting data, training, validating. Good foundations.</p>
+                    <div class="chip-grid">
+                        <div class="chip"><i class="fa-solid fa-table-columns"></i> Tabular ML — churn, lead scoring, forecasting</div>
+                        <div class="chip"><i class="fa-solid fa-chart-bar"></i> Data warehousing, analytics, BI dashboards</div>
+                        <div class="chip"><i class="fa-solid fa-microscope"></i> Computer vision — digital pathology, utility inspection</div>
+                        <div class="chip"><i class="fa-solid fa-flask"></i> Biostatistics and clinical data analysis</div>
+                        <div class="chip"><i class="fa-solid fa-comment"></i> NLP — classification, summarization, sentiment</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Era 2 -->
+            <div class="era-block">
+                <div class="era-dot dot-navy">2</div>
+                <div class="card card-white">
+                    <div style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#9ca3af;margin-bottom:14px">GenAI Era · 2022–2024</div>
+                    <h3 class="hf" style="font-size:26px;font-weight:600;margin-bottom:12px">GenAI, Semantic Search &amp; Multimodal RAG</h3>
+                    <p style="color:#6b7280;font-size:15px;line-height:1.65;margin-bottom:0">We moved with the field but stayed architectural. Our GenAI work was rarely simple RAG — we built complex multimodal pipelines where accuracy demanded it. On-prem OSS models alongside cloud APIs.</p>
+                    <div class="chip-grid">
+                        <div class="chip"><i class="fa-solid fa-magnifying-glass"></i> Semantic search and enterprise knowledge bases</div>
+                        <div class="chip"><i class="fa-solid fa-scale-balanced"></i> Legal AI assistants with long-context reasoning</div>
+                        <div class="chip"><i class="fa-solid fa-database"></i> Text-to-SQL — AskAI over relational databases</div>
+                        <div class="chip"><i class="fa-solid fa-file-image"></i> Visual document information extraction</div>
+                        <div class="chip"><i class="fa-solid fa-person-chalkboard"></i> AI executive coaching and performance tools</div>
+                        <div class="chip"><i class="fa-solid fa-sliders"></i> Fine-tuning for domain-specific performance</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Era 3 -->
+            <div class="era-block">
+                <div class="era-dot dot-red">3</div>
+                <div class="card card-white" style="border:2px solid #003049">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+                        <span style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:#9ca3af">Voice AI Era · 2024–Present</span>
+                        <span class="pill pill-navy" style="font-size:11px;padding:4px 12px">Active</span>
+                    </div>
+                    <h3 class="hf" style="font-size:26px;font-weight:600;margin-bottom:12px">Voice AI — Full Pipeline Ownership</h3>
+                    <p style="color:#6b7280;font-size:15px;line-height:1.65;margin-bottom:0">Most of our current client work is Voice AI. We build the whole system — ASR, LLM, TTS, RAG, orchestration — not just plug in APIs. We fine-tune for each client's use case to get smaller, faster, cheaper models that outperform generic large models.</p>
+                    <div class="chip-grid">
+                        <div class="chip"><i class="fa-solid fa-headset" style="color:#e63946"></i> Inbound customer support agents</div>
+                        <div class="chip"><i class="fa-solid fa-phone-volume" style="color:#e63946"></i> Outbound sales and follow-up automation</div>
+                        <div class="chip"><i class="fa-solid fa-shield-halved" style="color:#e63946"></i> Fraud detection and compliance monitoring</div>
+                        <div class="chip"><i class="fa-solid fa-earth-americas" style="color:#e63946"></i> 20+ languages, on-prem deployments</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Era 4 -->
+            <div class="era-block">
+                <div class="era-dot dot-red">4</div>
+                <div class="card card-red">
+                    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap">
+                        <span style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.55)">Physical AI Era · 2024–Present</span>
+                        <span class="pill" style="background:rgba(255,255,255,.2);color:#fff;font-size:11px;padding:4px 12px">Growing</span>
+                    </div>
+                    <h3 class="hf" style="font-size:26px;font-weight:600;margin-bottom:12px;color:#fff">Physical AI — Industrial &amp; Real-World Vision</h3>
+                    <p style="color:rgba(255,255,255,.8);font-size:15px;line-height:1.65;margin-bottom:0">We're getting increasing traction in Physical AI. Industrial anomaly detection, factory monitoring, traffic intelligence — systems that understand and act on real-world visual data. This is where our research and applied work converge.</p>
+                    <div class="chip-grid">
+                        <div class="chip chip-red-bg"><i class="fa-solid fa-triangle-exclamation"></i> Industrial anomaly and defect detection</div>
+                        <div class="chip chip-red-bg"><i class="fa-solid fa-industry"></i> Factory monitoring and alert systems</div>
+                        <div class="chip chip-red-bg"><i class="fa-solid fa-car-on"></i> Traffic monitoring and violation detection</div>
+                        <div class="chip chip-red-bg"><i class="fa-solid fa-eye"></i> Medical imaging and digital pathology</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- HOW WE WORK -->
+<section class="section border-b bg-white">
+    <div class="container">
+        <div class="two-col">
+            <div>
+                <div style="font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:#9ca3af;margin-bottom:14px">How we operate</div>
+                <h2 class="hf sec-h" style="margin-bottom:24px">We handle the complexity others don't want.</h2>
+                <p style="color:#6b7280;font-size:17px;line-height:1.65;margin-bottom:16px">We're not a prompt engineering shop. We train models, design architectures, deploy on-prem, and own the outcome. Our clients come to us when the problem is genuinely hard.</p>
+                <p style="color:#6b7280;font-size:17px;line-height:1.65">Most of our clients are Fortune 500 enterprises or Series B+ startups. Engagements run from 3-week proof-of-concepts to multi-year co-development partnerships.</p>
+            </div>
+            <div class="how-grid">
+                <div class="how-item">
+                    <div class="how-icon"><i class="fa-solid fa-server"></i></div>
+                    <div><div style="font-weight:600;margin-bottom:4px">On-premise first</div><div style="color:#6b7280;font-size:14px;line-height:1.55">Security-conscious enterprises need their data to stay on their infrastructure. We build for that by default.</div></div>
+                </div>
+                <div class="how-item">
+                    <div class="how-icon"><i class="fa-solid fa-sliders"></i></div>
+                    <div><div style="font-weight:600;margin-bottom:4px">Fine-tune, don't just prompt</div><div style="color:#6b7280;font-size:14px;line-height:1.55">We fine-tune models for client use cases to get smaller, faster, cheaper systems that outperform generic large models.</div></div>
+                </div>
+                <div class="how-item">
+                    <div class="how-icon"><i class="fa-solid fa-layer-group"></i></div>
+                    <div><div style="font-weight:600;margin-bottom:4px">Full-stack ownership</div><div style="color:#6b7280;font-size:14px;line-height:1.55">We build and own the whole system — from data pipeline to inference infrastructure — not individual components.</div></div>
+                </div>
+                <div class="how-item">
+                    <div class="how-icon"><i class="fa-solid fa-arrows-spin"></i></div>
+                    <div><div style="font-weight:600;margin-bottom:4px">Multimodal by default</div><div style="color:#6b7280;font-size:14px;line-height:1.55">Most real-world problems are multimodal. We design architectures for that from the start.</div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section style="padding:96px 0;background:#003049;color:#fff">
+    <div style="max-width:640px;margin:0 auto;text-align:center;padding:0 24px">
+        <div style="font-size:12px;text-transform:uppercase;letter-spacing:.1em;color:#e63946;margin-bottom:16px">Work with us</div>
+        <h2 class="hf" style="font-size:clamp(32px,5vw,54px);font-weight:600;letter-spacing:-.03em;line-height:1.05;margin-bottom:20px">Bring us the problem that's been too hard.</h2>
+        <p style="color:#d1d5db;font-size:17px;margin-bottom:44px">We work best with teams who have a real problem, not just an interest in AI.</p>
+        <a href="index.html#contact" class="btn-primary" style="display:inline-flex;font-size:17px;padding:18px 40px">Start a conversation →</a>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer style="background:#f8f5f0;border-top:1px solid #e5e7eb;padding:64px 0">
+    <div class="container">
+        <div class="footer-inner">
+            <div>
+                <a href="index.html" style="display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;margin-bottom:14px">
+                    <div class="logo-icon">M</div>
+                    <span class="logo-text">Metric AI Lab</span>
+                </a>
+                <p style="font-size:14px;color:#6b7280;line-height:1.6">Frontier Applied AI Research Lab<br>Yerevan, Armenia</p>
+            </div>
+            <div class="footer-links">
+                <div class="fcol"><div class="fcol-title">Lab</div><a href="research.html">Research</a><a href="applied-ai.html">Applied AI</a><a href="portfolio.html">Portfolio</a></div>
+                <div class="fcol"><div class="fcol-title">Contact</div><a href="mailto:info@metric.am">info@metric.am</a></div>
+                <div class="fcol"><div class="fcol-title">Open Science</div><a href="https://huggingface.co/Metric-AI" target="_blank">Hugging Face</a><a href="https://am.linkedin.com/company/metric-ai-lab" target="_blank">LinkedIn</a></div>
+            </div>
+            <div style="font-size:12px;color:#9ca3af;align-self:flex-end;white-space:nowrap">© 2026 Metric AI Lab</div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('mobile-menu').classList.toggle('open'));
+    function closeMobile(){document.getElementById('mobile-menu').classList.remove('open');}
+</script>
+</body>
+</html>
